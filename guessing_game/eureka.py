@@ -2,8 +2,9 @@
 
 import random
 
-num = random.randint(1, 100)
+num = random.randint(1,100)
 past_guess = []
+no_of_guesses = 0
 
 print()
 print("Welcome to the Enigma_Explorer", end="\n")
@@ -28,15 +29,20 @@ print()
 while True:
     player_guess = int(input("Take a guess from 1 - 100: "))
 
+    if player_guess < 1 or player_guess > 100:
+        print("OUT OF BOUNDS")
+        continue
+
+    no_of_guesses += 1
+
     if player_guess == num:
         print()
         print("Eureka!! :-), You have guessed correct")
         print()
         print("{}, you guessed a total of {} times".format(Name, no_of_guesses))
+        print()
         break
 
-    if player_guess < 1 or player_guess > 100:
-        print("OUT OF BOUNDS")
     if num - 10 <= player_guess <= num + 10:
         print("WARM")
     else:
@@ -47,10 +53,13 @@ while True:
     p_guess = past_guess[-1]
 
     new_guess = int(input("Try again : "))
+    if new_guess < 1 or new_guess > 100:
+        print("OUT OF BOUNDS")
+        continue
+
+    no_of_guesses += 1
+
     if abs(new_guess - num) < abs(p_guess - num):
         print("WARMER")
-    elif abs(new_guess - num) == abs(p_guess - num):
-        print("WARM")
     else:
         print("COLDER")
-    no_of_guesses = len(past_guess)
