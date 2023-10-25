@@ -2,64 +2,58 @@
 
 import random
 
-num = random.randint(1,100)
-past_guess = []
-no_of_guesses = 0
+def get_valid_guess():
+    while True:
+        try:
+            guess = int(input("Take a guess from 1 - 100: "))
+            if 1 <= guess <= 100:
+                return guess
+            else:
+                print("OUT OF BOUNDS")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
 
-print()
-print("Welcome to the Enigma_Explorer", end="\n")
-Name = input("Enter Your User Name: ")
+def play_guessing_game():
+    num = random.randint(1, 100)
+    past_guess = []
+    no_of_guesses = 0
 
+    print("\nWelcome to the Enigma_Explorer")
+    Name = input("Enter Your User Name: ")
 
-print()
-print("Hello {}, This is The Guessing Number Challenge.". format(Name))
-print("The Rules are as follows")
-print("-" * 80)
-print("""1. A random number has been generated, you are to take
-      a guess of any number from 1 - 100"""
-      )
-print("""2. If your guess isn't the same as the number, keep
-      trying until you get the correct number"""
-      )
-print("3. Your input must be a number")
-print()
-print("-" * 80)
-print()
+    print("\nHello {}, This is The Guessing Number Challenge.".format(Name))
+    print("-" * 80)
+    print("1. A random number has been generated, you are to take a guess of any number from 1 - 100")
+    print("2. If your guess isn't the same as the number, keep trying until you get the correct number")
+    print("3. Your input must be a number")
+    print("-" * 80)
 
-while True:
-    player_guess = int(input("Take a guess from 1 - 100: "))
+    while True:
+        player_guess = get_valid_guess()
+        no_of_guesses += 1
 
-    if player_guess < 1 or player_guess > 100:
-        print("OUT OF BOUNDS")
-        continue
+        if player_guess == num:
+            print("\nEureka!! :-), You have guessed correct")
+            print("{}, you guessed a total of {} times\n".format(Name, no_of_guesses))
+            break
 
-    no_of_guesses += 1
+        if num - 10 <= player_guess <= num + 10:
+            print("WARM")
+        else:
+            print("COLD")
 
-    if player_guess == num:
-        print()
-        print("Eureka!! :-), You have guessed correct")
-        print()
-        print("{}, you guessed a total of {} times".format(Name, no_of_guesses))
-        print()
-        break
+        if len(past_guess) > 0:
+            p_guess = past_guess[-1]
+            new_guess = get_valid_guess()
+            no_of_guesses += 1
 
-    if num - 10 <= player_guess <= num + 10:
-        print("WARM")
-    else:
-        print("COLD")
+            if abs(new_guess - num) < abs(p_guess - num):
+                print("WARMER")
+            else:
+                print("COLDER")
 
-    if player_guess != num:
         past_guess.append(player_guess)
-    p_guess = past_guess[-1]
 
-    new_guess = int(input("Try again : "))
-    if new_guess < 1 or new_guess > 100:
-        print("OUT OF BOUNDS")
-        continue
+if __name__ == "__main__":
+    play_guessing_game()
 
-    no_of_guesses += 1
-
-    if abs(new_guess - num) < abs(p_guess - num):
-        print("WARMER")
-    else:
-        print("COLDER")
